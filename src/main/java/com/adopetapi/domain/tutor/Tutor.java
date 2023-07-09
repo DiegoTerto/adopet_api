@@ -34,4 +34,9 @@ public class Tutor {
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
     private Users users;
+
+    public Tutor(CreateTutorDTO dto, Users user) {
+        this.name = dto.name();
+        this.users = user;
+    }
 }
