@@ -2,6 +2,8 @@ package com.adopetapi.controller;
 
 import com.adopetapi.domain.tutor.TutorDTO;
 import com.adopetapi.domain.tutor.TutorService;
+import com.adopetapi.domain.tutor.UpdateTutorDTO;
+import org.hibernate.sql.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +34,12 @@ public class TutorController {
     public ResponseEntity deleteById(@PathVariable UUID id) {
         tutorService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<TutorDTO> update(@PathVariable UUID id, @RequestBody UpdateTutorDTO dto) {
+        var tutorUpdated = tutorService.update(dto, id);
+        return ResponseEntity.ok(tutorUpdated);
     }
 
 }

@@ -3,14 +3,15 @@ package com.adopetapi.domain.tutor;
 import com.adopetapi.domain.users.UserService;
 import com.adopetapi.domain.users.Users;
 import com.adopetapi.domain.users.UsersRepository;
-import com.adopetapi.infra.security.AuthorizationDTO;
 import com.adopetapi.infra.security.LoginService;
-import com.adopetapi.infra.security.TokenService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.Optional;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -60,5 +61,23 @@ public class TutorServiceTest {
         var exception = assertThrows(RuntimeException.class, () -> tutorService.createTutor(dto));
 
         assertEquals("Já existe um cadastro com o email informado!", exception.getMessage());
+    }
+
+    @Test
+    void shouldThrowException_whenTryDeleteNotExistTutor() {
+        when(tutorRepository.findById(any())).thenReturn(Optional.empty());
+
+        var exception = assertThrows(RuntimeException.class, () -> tutorService.delete(UUID.randomUUID()));
+
+        assertEquals("Tutor nao encontrado", exception.getMessage());
+    }
+
+    @Test
+    void should_deleteTutor() {
+        when(tutorRepository.findById(any())).thenReturn(Optional.of(new Tutor()));
+
+        assertDoesNotThrow(() -> tutorService.delete(UUID.randomUUID()));
+
+        verify(tutorRepository).delete(any());
     }
 }

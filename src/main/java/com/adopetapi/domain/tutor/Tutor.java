@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity(name = "Tutor")
@@ -38,5 +39,23 @@ public class Tutor {
     public Tutor(CreateTutorDTO dto, Users user) {
         this.name = dto.name();
         this.users = user;
+    }
+
+    public void update(UpdateTutorDTO dto) {
+        if (Objects.nonNull(dto.name())) {
+            this.name = dto.name();
+        }
+
+        if (Objects.nonNull(dto.phone())) {
+            this.phone = dto.phone();
+        }
+
+        if (Objects.nonNull(dto.city())) {
+            this.city = dto.city();
+        }
+
+        if (Objects.nonNull(dto.about())) {
+            this.about = dto.about();
+        }
     }
 }
