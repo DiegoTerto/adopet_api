@@ -43,4 +43,9 @@ public class TutorService {
                 .orElseThrow(() -> new IllegalIdentifierException("Tutor nao encontrado"));
         return new TutorDTO(tutor);
     }
+
+    public void delete(UUID id) {
+        var deleteTutor = tutorRepository.findById(id).orElseThrow(() -> new IllegalIdentifierException("Tutor nao encontrado"));
+        tutorRepository.delete(deleteTutor);
+    }
 }
