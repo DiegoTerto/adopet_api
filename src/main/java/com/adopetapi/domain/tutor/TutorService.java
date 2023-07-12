@@ -5,9 +5,11 @@ import com.adopetapi.infra.security.AuthorizationDTO;
 import com.adopetapi.infra.security.LoginService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.hibernate.boot.model.naming.IllegalIdentifierException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -34,5 +36,11 @@ public class TutorService {
             throw new RuntimeException("Nenhum tutor encontrado");
         }
         return tutors.stream().map(TutorDTO::new).toList();
+    }
+
+    public TutorDTO findById(UUID id) {
+        var tutor = tutorRepository.findById(id)
+                .orElseThrow(() -> new IllegalIdentifierException("Tutor nao encontrado"));
+        return new TutorDTO(tutor);
     }
 }
