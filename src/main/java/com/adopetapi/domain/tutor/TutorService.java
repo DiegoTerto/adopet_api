@@ -7,6 +7,8 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class TutorService {
@@ -24,5 +26,13 @@ public class TutorService {
         tutorRepository.save(tutor);
         var tokenJWT = loginService.auth(dto.email(), dto.password());
         return new AuthorizationDTO(tokenJWT);
+    }
+
+    public List<TutorDTO> findAll() {
+        var tutors = tutorRepository.findAll();
+        if (tutors.isEmpty()) {
+            throw new RuntimeException("Nenhum tutor encontrado");
+        }
+        return tutors.stream().map(TutorDTO::new).toList();
     }
 }
